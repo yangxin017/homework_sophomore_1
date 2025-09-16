@@ -1,0 +1,69 @@
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <string>
+using namespace std;
+
+int main()
+{
+    int n;
+    cout << "Enter the number of students" << endl;
+    cin >> n;
+    cin.ignore(); // 忽略掉換行
+
+    string* temp = new string[n];
+    int maxSpacePos = 0;
+
+    cout << "Enter " << n << " full names:" << endl;
+    for (int i = 0; i < n; i++) {
+        getline(cin, temp[i]);
+        int spacePos = temp[i].find(' ');
+        if (spacePos != string::npos && spacePos > maxSpacePos) {
+            maxSpacePos = spacePos; // 記錄最右邊要對齊的空格位置
+        }
+    }
+
+    char** names = (char**)malloc(n * sizeof(char*));
+
+    for (int i = 0; i < n; i++) {
+        int spacePos = temp[i].find(' ');
+        string first, rest;
+        if (spacePos != string::npos) {
+            first = temp[i].substr(0, spacePos);
+            rest  = temp[i].substr(spacePos + 1);
+        } else {
+            first = temp[i];
+            rest  = "";
+            spacePos = first.size();
+        }
+
+        // 前置空格數
+        int leadingSpaces = maxSpacePos - spacePos;
+
+        // 計算總長度
+        int totalLen = leadingSpaces + first.size() + 1 + rest.size();
+
+        names[i] = (char*)malloc((totalLen + 1) * sizeof(char));
+
+        // 組裝字串
+        string line;
+        line.append(leadingSpaces, ' '); // 前置空格
+        line += first;
+        line += " ";
+        line += rest;
+
+        strcpy(names[i], line.c_str());
+    }
+
+    for (int i = 0; i < n; i++) {
+        cout << names[i] << endl;
+    }
+
+    for (int i = 0; i < n; i++) {
+        free(names[i]);
+    }
+    free(names);
+    delete[] temp;
+
+    return 0;
+}
