@@ -1,0 +1,60 @@
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+using namespace std;
+char lastname_code(char* name){
+    int len=strlen(name);
+    if (len==0) return-1;
+    return name[len-1];
+}
+void Bubblesort(char**names,int n){
+    for(int i=0;i< n-1;i++){
+        for(int j=0;j<n-i-1;j++){
+            if(lastname_code(*(names+j))>lastname_code(*(names+j+1))){
+                char* temp=names[j];
+                names[j]=names[j+1];
+                names[j+1]=temp;
+            }
+        }
+    }
+}
+int main()
+{
+    int n,m;
+    //malloc
+    cout<<"Enter the number of student"<<endl;
+    cout<<"Enter the max length of their name"<<endl;
+    cin >>n>>m;
+    char** names=(char**)malloc(n*sizeof(char*));
+    for(int i=0;i<n;i++){
+        names[i]=(char*)malloc((m+1)*sizeof(char));
+    }
+    cout<<"Enter the names of"<<n<<"students"<<endl;
+    for(int i=0;i<n;i++){
+        cin>>names[i];
+    }
+    //new
+    char**names_new=new char*[n];
+    for(int i=0;i<n;i++){
+        names_new[i]=new char[m+1];
+    }
+    cout<<"Enter the names of"<<n<<" students"<<endl;
+    for(int i=0;i<n;i++){
+        cin>>names_new[i];
+    }
+    for(int i=0;i<n;i++){
+        delete[] names_new[i];
+    }
+    delete[] names_new;
+    
+    Bubblesort(names,n);
+    
+    for(int i=0;i<n;i++){
+        cout<< names[i]<<endl;
+    }
+    for(int i=0;i<n;i++){
+        free(names[i]);
+    }
+    free(names);
+    return 0;
+}
