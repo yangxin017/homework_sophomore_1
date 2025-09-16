@@ -1,1 +1,50 @@
-
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <string>
+using namespace std;
+int find_max_before_space(char** names,n){
+    int max=0,temp=0;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<y;j++){
+            if(name[i][j]!=' '){
+                temp++;
+            }else{
+                if(max<temp) max=temp;
+                temp=0;
+                break;
+                
+            }
+        }
+    }return max;
+}
+int main()
+{
+    int n;
+    cout<<"Enter the number of student"<<endl;
+    cin >>n;
+    string* temp = new string[n];
+    int y = 0;
+    cout << "Enter " << n << " full names:" << endl;
+    for(int i=0;i<n;i++){
+        getline(cin,temp[i]);
+        if((int)temp[i].size()>y) y=temp[i].size();
+    }
+    char** names=(char**)malloc(n*sizeof(char*));
+    for(int i=0;i<n;i++){
+        names[i]=(char*)malloc((y+1)*sizeof(char));
+        strncpy(names[i], temp[i].c_str(), len);
+        names[i][y]='\0';
+    }
+    for (int i = 0; i < n; i++) {
+        cout << names[i] << endl;
+    }
+    
+    
+    for(int i=0;i<n;i++){
+        free (names[i]);
+    }
+    free (names);
+    delete[] temp;
+    return 0;
+}
