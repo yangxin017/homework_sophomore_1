@@ -1,0 +1,57 @@
+#include <iostream>
+#include <fstream>
+#include <ctime>
+using namespace std;
+
+void SelectionSort(int *a, int n) {
+    for(int i=0; i<n; i++) {
+        int mini = i;
+        for(int j=i+1; j<n; j++) {
+            if(a[mini] > a[j]) {
+                mini = j;
+            }
+        }
+        int temp = a[i];
+        a[i] = a[mini];
+        a[mini] = temp;
+    }
+}
+
+int main() {
+    ofstream fout_n("n_values.txt");         // 存 n 值
+    ofstream fout_time("time_milliseconds.txt"); // 存毫秒數
+
+    int maxN = 3000;
+    int samples = 100;
+
+    for(int k=0; k<=samples; k++) {
+        int n = (maxN * k) / samples; // 平均分布的 n
+        fout_n << n << "\n"; // 先存 n
+
+        if(n == 0) {
+            fout_time << 0 << "\n";
+            continue;
+        }
+
+        int *arr = new int[n]; // 最糟輸入
+        for(int i=0; i<n; i++) {
+            arr[i] = n - i;
+        }
+
+        clock_t start = clock();
+        SelectionSort(arr, n);
+        clock_t end = clock();
+
+        double elapsed_ms = (end - start) * 1000.0 / CLOCKS_PER_SEC;
+
+        fout_time << elapsed_ms << "\n";
+        cout << "n=" << n << " time=" << elapsed_ms << " ms\n";
+
+        delete[] arr;
+    }
+
+    fout_n.close();
+    fout_time.close();
+    cout << "結果已輸出file\n";
+    return 0;
+}
